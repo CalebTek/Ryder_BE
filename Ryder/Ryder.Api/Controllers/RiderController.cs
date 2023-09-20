@@ -1,9 +1,8 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Ryder.Api.Controllers;
-using Ryder.Application.RiderAvailability.Command;
-using Ryder.Application.RiderAvailability.Query;
+using Ryder.Application.Rider.Command.RiderAvailability;
+using Ryder.Application.Rider.Query.AllRiderHistory;
+using Ryder.Application.Rider.Query.GetRiderAvailability;
 
 public class RiderController : ApiController
 {
@@ -18,5 +17,11 @@ public class RiderController : ApiController
     public async Task<IActionResult> GetRiderAvailability(Guid id)
     {
         return await Initiate(() => Mediator.Send(new GetRiderAvailabilityQuery { RiderId = id }));
+    }
+
+    [HttpGet("ride-history-by-id/{riderId}")]
+    public async Task<IActionResult> GetRideHistoryById(Guid riderId)
+    {
+        return await Initiate(() => Mediator.Send(new RideHistoryQuery { RiderId = riderId }));
     }
 }

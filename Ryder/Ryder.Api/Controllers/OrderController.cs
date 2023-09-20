@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Ryder.Application.Orders.Command.PlaceOrder;
-using Ryder.Application.Orders.Query.GetAllOrder;
-using Microsoft.Extensions.Logging;
 using Ryder.Application.order.Query.AcceptOrder;
 using Ryder.Application.order.Query.EndRide;
 using Ryder.Application.order.Query.OrderProgress;
-using Ryder.Application.Orders.Query.GetOderById;
+using Ryder.Application.Order.Command.PlaceOrder;
+using Ryder.Application.Order.Query.GetAllOrder;
+using Ryder.Application.Order.Query.GetOderById;
 
 namespace Ryder.Api.Controllers
 {
@@ -22,7 +21,6 @@ namespace Ryder.Api.Controllers
         [HttpPost("placeOrder")]
         public async Task<IActionResult> PlaceOrder([FromBody] PlaceOrderCommand placeOrder)
         {
-            
             return await Initiate(() => Mediator.Send(placeOrder));
         }
 
@@ -36,7 +34,6 @@ namespace Ryder.Api.Controllers
         [HttpGet("getAllOrder")]
         public async Task<IActionResult> GetAllOrder()
         {
-            
             return await Initiate(() => Mediator.Send(new GetAllOrderQuery()));
         }
 
@@ -50,7 +47,6 @@ namespace Ryder.Api.Controllers
         [HttpGet("{orderId}")]
         public async Task<IActionResult> GetOrderById(Guid orderId)
         {
-            
             return await Initiate(() => Mediator.Send(new GetOrderByIdQuery { OrderId = orderId }));
         }
 

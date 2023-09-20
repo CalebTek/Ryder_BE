@@ -1,15 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Ryder.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Ryder.Domain.Context;
+using Ryder.Domain.Entities;
 using Ryder.Infrastructure.Policy;
 using System.Security.Cryptography;
 
