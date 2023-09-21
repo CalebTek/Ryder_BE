@@ -11,6 +11,8 @@ namespace Ryder.Domain.Entities
         public string ReferenceNumber { get; set; }
         public OrderStatus Status { get; set; }
         public decimal Amount { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
         public Guid RiderId { get; set; }
     }
 }
