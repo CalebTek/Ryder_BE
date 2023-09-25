@@ -41,7 +41,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseDeveloperExceptionPage();
 
-await Seeder.SeedData(app);
+//await Seeder.SeedData(app);
 
 app.UseHttpsRedirection();
 

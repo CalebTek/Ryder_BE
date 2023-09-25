@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Ryder.Application.order.Query.AcceptOrder;
 using Ryder.Application.order.Query.EndRide;
 using Ryder.Application.order.Query.OrderProgress;
@@ -12,12 +13,13 @@ namespace Ryder.Api.Controllers
     {
         private readonly ILogger<OrderController> _logger;
 
-        public OrderController(ILogger<OrderController> logger)
+        public OrderController(MediatR.IMediator @object, ILogger<OrderController> logger)
         {
             _logger = logger;
             _logger.LogInformation("OrderController initialized.");
         }
 
+        [AllowAnonymous]
         [HttpPost("placeOrder")]
         public async Task<IActionResult> PlaceOrder([FromBody] PlaceOrderCommand placeOrder)
         {
@@ -31,6 +33,7 @@ namespace Ryder.Api.Controllers
             return await Initiate(() => Mediator.Send(command));
         }
 
+        [AllowAnonymous]
         [HttpGet("getAllOrder")]
         public async Task<IActionResult> GetAllOrder()
         {
@@ -44,6 +47,7 @@ namespace Ryder.Api.Controllers
             return await Initiate(() => Mediator.Send(command));
         }
 
+        [AllowAnonymous]
         [HttpGet("{orderId}")]
         public async Task<IActionResult> GetOrderById(Guid orderId)
         {

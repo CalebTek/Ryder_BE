@@ -17,8 +17,15 @@ namespace Ryder.Application.Order.Query.GetAllOrder
         public async Task<IResult<List<Domain.Entities.Order>>> Handle(GetAllOrderQuery request,
             CancellationToken cancellationToken)
         {
-            var orders = await _context.Orders.ToListAsync(cancellationToken);
-            return Result<List<Domain.Entities.Order>>.Success(orders);
+            try
+            {
+                var orders = await _context.Orders.ToListAsync(cancellationToken);
+                return Result<List<Domain.Entities.Order>>.Success(orders);
+            }
+            catch (Exception ex)
+            {
+                return Result<List<Domain.Entities.Order>>.Fail(ex.Message);
+            }
         }
     }
 }

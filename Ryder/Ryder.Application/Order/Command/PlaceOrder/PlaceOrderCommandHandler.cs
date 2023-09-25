@@ -50,10 +50,17 @@ namespace Ryder.Application.Order.Command.PlaceOrder
                 Status = OrderStatus.OrderPlaced
             };
 
-            await _context.Orders.AddAsync(order, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            try
+            {
+                await _context.Orders.AddAsync(order, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
 
-            return Result<Guid>.Success(order.Id, "Order placed successfully");
+                return Result<Guid>.Success(order.Id, "Order placed successfully");
+            }
+            catch (Exception ex)
+            {
+                return Result<Guid>.Fail(ex.Message);
+            }
         }
     }
 }

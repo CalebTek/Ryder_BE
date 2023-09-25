@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ryder.Api\Ryder.Api.csproj" />
     <ProjectReference Include="..\Ryder.Application\Ryder.Application.csproj" />
     <ProjectReference Include="..\Ryder.Domain\Ryder.Domain.csproj" />
   </ItemGroup>
