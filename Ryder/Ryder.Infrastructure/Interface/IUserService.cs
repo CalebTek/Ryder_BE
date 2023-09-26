@@ -11,6 +11,7 @@ namespace Ryder.Infrastructure.Interface
     {
         Task<AppUser> ValidateUserAsync(string email, string password);
         Task<AppUser> RegisterUserAsync(string email, string password, string firstName, string lastName, string phoneNumber);
-        // Add other user-related methods here as needed
-    }
+		Task SignOutAsync();
+		// Add other user-related methods here as needed
+	}
 }

@@ -9,13 +9,15 @@ namespace Ryder.Infrastructure.Implementation
     public class UserService : IUserService
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManger;
 
-        public UserService(UserManager<AppUser> userManager)
-        {
-            _userManager = userManager;
-        }
+		public UserService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManger)
+		{
+			_userManager = userManager;
+			_signInManger = signInManger;
+		}
 
-        public async Task<AppUser> ValidateUserAsync(string email, string password)
+		public async Task<AppUser> ValidateUserAsync(string email, string password)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user != null && await _userManager.CheckPasswordAsync(user, password))
@@ -48,6 +50,11 @@ namespace Ryder.Infrastructure.Implementation
             throw new Exception("User registration failed."); // Handle this exception as needed
         }
 
-        // Add other user-related methods here as needed
-    }
+		public async Task SignOutAsync()
+		{
+			await _signInManger.SignOutAsync();
+		}
+
+		// Add other user-related methods here as needed
+	}
 }

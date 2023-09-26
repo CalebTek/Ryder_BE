@@ -34,9 +34,9 @@ namespace Ryder.Infrastructure.Implementation
 
                 using var client = new SmtpClient();
                 await client.ConnectAsync(_settings.SmtpHost, _settings.SmtpPort, true);
-                await client.AuthenticateAsync(_settings.SenderName, _settings.SmtpPassword);
+                await client.AuthenticateAsync(_settings.SmtpUsername, _settings.SmtpPassword);
                 await client.SendAsync(email);
-                await client.DisconnectAsync(true);
+                await client.DisconnectAsync(false);
 
                 return true;
             }

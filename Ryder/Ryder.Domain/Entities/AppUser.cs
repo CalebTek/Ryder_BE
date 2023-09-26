@@ -6,11 +6,9 @@ namespace Ryder.Domain.Entities
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string ProfilePictureUrl { get; set; }
-        public string RefreshToken { get; set; }
+        public string? ProfilePictureUrl { get; set; }
+        public string? RefreshToken { get; set; } 
         public DateTime RefreshTokenExpiryTime { get; set; }
-        public string Otp { get; set; }
-        public DateTime OtpExpiration { get; set; }
-        public Address Address { get; set; }
+        public Address? Address { get; set; }
     }
 }

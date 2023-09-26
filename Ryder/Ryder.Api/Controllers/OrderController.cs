@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Ryder.Application.order.Query.AcceptOrder;
-using Ryder.Application.order.Query.EndRide;
 using Ryder.Application.order.Query.OrderProgress;
+using Ryder.Application.Order.Command.AcceptOrder;
+using Ryder.Application.Order.Command.EndRide;
 using Ryder.Application.Order.Command.PlaceOrder;
 using Ryder.Application.Order.Query.GetAllOrder;
 using Ryder.Application.Order.Query.GetOderById;

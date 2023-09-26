@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Ryder.Application.Authentication.Command.ConfirmEmail;
 using Ryder.Application.Authentication.Command.ForgetPassword;
 using Ryder.Application.Authentication.Command.Login;
+using Ryder.Application.Authentication.Command.Logout;
 using Ryder.Application.Authentication.Command.Registration.RiderRegistration;
 using Ryder.Application.Authentication.Command.Registration.UserRegistration;
 using Ryder.Application.Authentication.Command.ResendConfirmationEmailCommand;
@@ -59,6 +60,13 @@ namespace Ryder.Api.Controllers
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailCommand command)
         {
             return await Initiate(() => Mediator.Send(command));
+        }
+
+        [AllowAnonymous]
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            return await Initiate(() => Mediator.Send(new LogoutCommand()));
         }
     }
 }

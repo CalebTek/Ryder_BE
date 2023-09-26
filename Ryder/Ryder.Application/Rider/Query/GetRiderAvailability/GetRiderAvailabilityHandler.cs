@@ -1,6 +1,8 @@
 ﻿using AspNetCoreHero.Results;
 using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Ryder.Application.Common.Hubs;
 using Ryder.Domain.Context;
 using Ryder.Domain.Entities;
 using Ryder.Domain.Enums;
@@ -11,13 +13,15 @@ namespace Ryder.Application.Rider.Query.GetRiderAvailability
         GetRiderAvailabilityHandler : IRequestHandler<GetRiderAvailabilityQuery, IResult<GetRiderAvailabilityResponse>>
     {
         private readonly ApplicationContext _Context;
+       
 
-        public GetRiderAvailabilityHandler(ApplicationContext Context)
-        {
-            _Context = Context;
-        }
+		public GetRiderAvailabilityHandler(ApplicationContext context)
+		{
+			_Context = context;
+			
+		}
 
-        public async Task<IResult<GetRiderAvailabilityResponse>> Handle(GetRiderAvailabilityQuery request,
+		public async Task<IResult<GetRiderAvailabilityResponse>> Handle(GetRiderAvailabilityQuery request,
             CancellationToken cancellationToken)
         {
             var rider = await _Context.Riders
@@ -35,7 +39,7 @@ namespace Ryder.Application.Rider.Query.GetRiderAvailability
                 AvailabilityStatus = rider.AvailabilityStatus
             };
 
-            return await Result<GetRiderAvailabilityResponse>.SuccessAsync(response);
+			return await Result<GetRiderAvailabilityResponse>.SuccessAsync(response);
         }
     }
 }

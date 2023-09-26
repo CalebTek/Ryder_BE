@@ -5,6 +5,7 @@ namespace Ryder.Domain.Entities
 {
     public class Order : BaseEntity
     {
+        
         public Address PickUpLocation { get; set; }
         public Address DropOffLocation { get; set; }
         public string PickUpPhoneNumber { get; set; }

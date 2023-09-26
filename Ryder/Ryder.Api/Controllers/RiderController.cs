@@ -3,6 +3,7 @@ using Ryder.Api.Controllers;
 using Ryder.Application.Rider.Command.RiderAvailability;
 using Ryder.Application.Rider.Query.AllRiderHistory;
 using Ryder.Application.Rider.Query.GetRiderAvailability;
+using Ryder.Application.Rider.Query.RidersEarnings;
 
 public class RiderController : ApiController
 {
@@ -23,5 +24,11 @@ public class RiderController : ApiController
     public async Task<IActionResult> GetRideHistoryById(Guid riderId)
     {
         return await Initiate(() => Mediator.Send(new RideHistoryQuery { RiderId = riderId }));
+    }
+
+    [HttpGet("Rider-Earnings/{id}")]
+    public async Task<IActionResult> GetRiderEarnings(Guid id)
+    {
+        return await Initiate(() => Mediator.Send(new RiderEarningsQuery { RiderId = id }));
     }
 }

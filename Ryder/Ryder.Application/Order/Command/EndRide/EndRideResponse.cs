@@ -2,7 +2,7 @@
 using Ryder.Domain.Enums;
 using System;
 
-namespace Ryder.Application.order.Query.EndRide
+namespace Ryder.Application.Order.Command.EndRide
 {
     public class EndRideResponse
     {
@@ -12,7 +12,8 @@ namespace Ryder.Application.order.Query.EndRide
         public decimal Amount { get; set; }
         public OrderStatus Status { get; set; }
         public string PickUpPhoneNumber { get; set; }
+        
     }
 
-    
+
 }

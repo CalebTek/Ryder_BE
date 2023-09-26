@@ -1,6 +1,6 @@
 ﻿using AspNetCoreHero.Results;
 using MediatR;
-using Ryder.Application.order.Query.AcceptOrder;
+//using Ryder.Application.order.Query.AcceptOrder;
 using Ryder.Domain.Context;
 using System;
 using System.Linq;

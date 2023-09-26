@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.Results;
 using MediatR;
+using Ryder.Application.Common.Hubs;
 using Ryder.Domain.Context;
 using Ryder.Domain.Entities;
 using Ryder.Domain.Enums;
@@ -14,12 +15,11 @@ namespace Ryder.Application.Order.Command.PlaceOrder
     public class PlaceOrderCommandHandler : IRequestHandler<PlaceOrderCommand, IResult<Guid>>
     {
         private readonly ApplicationContext _context;
-
+       
         public PlaceOrderCommandHandler(ApplicationContext context)
         {
             _context = context;
         }
-
         public async Task<IResult<Guid>> Handle(PlaceOrderCommand request, CancellationToken cancellationToken)
         {
             var order = new Domain.Entities.Order
@@ -53,7 +53,7 @@ namespace Ryder.Application.Order.Command.PlaceOrder
             await _context.Orders.AddAsync(order, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return Result<Guid>.Success(order.Id, "Order placed successfully");
+			return Result<Guid>.Success(order.Id, "Order placed successfully");
         }
     }
 }

@@ -35,7 +35,6 @@ namespace Ryder.Application.Authentication.Command.Registration.RiderRegistratio
                 LastName = request.LastName,
                 Email = request.Email,
                 PhoneNumber = request.PhoneNumber,
-                PasswordHash = request.Password,
                 UserName = request.Email
             };
 
@@ -57,9 +56,6 @@ namespace Ryder.Application.Authentication.Command.Registration.RiderRegistratio
 
                 //Send Confirmation mail
                 var token = new Random().Next(100000, 999999).ToString();
-
-                user.Otp = TokenConverter.EncodeToken(token);
-                user.OtpExpiration = DateTime.UtcNow.AddMinutes(10);
 
                 //TODO:Change this to an email template
                 var emailBody =

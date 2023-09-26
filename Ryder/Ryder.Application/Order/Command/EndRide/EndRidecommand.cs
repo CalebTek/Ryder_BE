@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging; // Import the logging library.
 
-namespace Ryder.Application.order.Query.EndRide
+namespace Ryder.Application.Order.Command.EndRide
 {
     public class EndRideCommand : IRequest<IResult<EndRideResponse>>
     {
