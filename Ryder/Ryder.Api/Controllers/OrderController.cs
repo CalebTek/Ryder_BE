@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Ryder.Application.order.Query.OrderProgress;
 using Ryder.Application.Order.Command.AcceptOrder;
 using Ryder.Application.Order.Command.EndRide;
@@ -18,6 +19,7 @@ namespace Ryder.Api.Controllers
             _logger.LogInformation("OrderController initialized.");
         }
 
+        
         [HttpPost("placeOrder")]
         public async Task<IActionResult> PlaceOrder([FromBody] PlaceOrderCommand placeOrder)
         {
@@ -31,10 +33,11 @@ namespace Ryder.Api.Controllers
             return await Initiate(() => Mediator.Send(command));
         }
 
+      
         [HttpGet("getAllOrder")]
-        public async Task<IActionResult> GetAllOrder()
+        public async Task<IActionResult> GetAllOrder([FromQuery] Guid appUserId)
         {
-            return await Initiate(() => Mediator.Send(new GetAllOrderQuery()));
+            return await Initiate(() => Mediator.Send(new GetAllOrderQuery { AppUserId = appUserId}));
         }
 
         [HttpPost("progress")]
@@ -44,10 +47,11 @@ namespace Ryder.Api.Controllers
             return await Initiate(() => Mediator.Send(command));
         }
 
-        [HttpGet("{orderId}")]
-        public async Task<IActionResult> GetOrderById(Guid orderId)
+   
+        [HttpGet("{appUserId}/{orderId}")]
+        public async Task<IActionResult> GetOrderById(Guid appUserId, Guid orderId)
         {
-            return await Initiate(() => Mediator.Send(new GetOrderByIdQuery { OrderId = orderId }));
+            return await Initiate(() => Mediator.Send(new GetOrderByIdQuery { AppUserId = appUserId, OrderId = orderId}));
         }
 
         [HttpPost("end")]

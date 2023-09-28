@@ -35,19 +35,12 @@ namespace Ryder.Application.Authentication.Command.Login
             // Generate token
             var token = await _tokenService.GenerateTokenAsync(user);
 
-            // Retrieve JwtSettings from configuration
-            var jwtSettings = new
-            {
-                SecretKey = _configuration["JwtSettings:SecretKey"],
-                Issuer = _configuration["JwtSettings:Issuer"],
-                Audience = _configuration["JwtSettings:Audience"],
-                TokenValidityInMinutes = int.Parse(_configuration["JwtSettings:TokenValidityInMinutes"]),
-                RefreshTokenValidityInDays = int.Parse(_configuration["JwtSettings:RefreshTokenValidityInDays"])
-            };
-
             var response = new LoginResponse
             {
                 Token = token,
+                UserId = user.Id,
+                UserName = user.UserName,
+                FullName = $"{user.FirstName} {user.LastName}",
 
                 // Add any other properties you want to return on successful login
             };

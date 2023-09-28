@@ -9,11 +9,13 @@ namespace Ryder.Domain.Entities
         public Address PickUpLocation { get; set; }
         public Address DropOffLocation { get; set; }
         public string PickUpPhoneNumber { get; set; }
+        public string PackageDescription { get; set; }
         public string ReferenceNumber { get; set; }
         public OrderStatus Status { get; set; }
         public decimal Amount { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public Guid AppUserId { get; set; }
         public Guid RiderId { get; set; }
     }
 }

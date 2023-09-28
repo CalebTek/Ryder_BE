@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.Results;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Ryder.Application.Common.Hubs;
 using Ryder.Domain.Context;
 using Ryder.Domain.Entities;
@@ -15,45 +16,64 @@ namespace Ryder.Application.Order.Command.PlaceOrder
     public class PlaceOrderCommandHandler : IRequestHandler<PlaceOrderCommand, IResult<Guid>>
     {
         private readonly ApplicationContext _context;
+        private readonly UserManager<AppUser> _userManager;
        
-        public PlaceOrderCommandHandler(ApplicationContext context)
+        public PlaceOrderCommandHandler(ApplicationContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         public async Task<IResult<Guid>> Handle(PlaceOrderCommand request, CancellationToken cancellationToken)
         {
-            var order = new Domain.Entities.Order
+            try
             {
-                Id = Guid.NewGuid(),
-                PickUpLocation = new Address
-                {
-                    City = request.PickUpLocation.City,
-                    State = request.PickUpLocation.State,
-                    PostCode = request.PickUpLocation.PostCode,
-                    Longitude = request.PickUpLocation.Longitude,
-                    Latitude = request.PickUpLocation.Latitude,
-                    Country = request.PickUpLocation.Country,
-                },
-                DropOffLocation = new Address
-                {
-                    City = request.PickUpLocation.City,
-                    State = request.PickUpLocation.State,
-                    PostCode = request.PickUpLocation.PostCode,
-                    Longitude = request.PickUpLocation.Longitude,
-                    Latitude = request.PickUpLocation.Latitude,
-                    Country = request.PickUpLocation.Country,
-                },
-                PickUpPhoneNumber = request.PickUpPhoneNumber,
-                ReferenceNumber = request.ReferenceNumber,
-                Amount = request.Amount,
-                RiderId = request.RiderId,
-                Status = OrderStatus.OrderPlaced
-            };
+                var currentUser = await _userManager.FindByIdAsync(request.AppUserId.ToString());
 
-            await _context.Orders.AddAsync(order, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+                if (currentUser == null)
+                {
+                    return Result<Guid>.Fail("User not found");
+                }
 
-			return Result<Guid>.Success(order.Id, "Order placed successfully");
+                var order = new Domain.Entities.Order
+                {
+                    Id = Guid.NewGuid(),
+                    PickUpLocation = new Address
+                    {
+                        City = request.PickUpLocation.City,
+                        State = request.PickUpLocation.State,
+                        PostCode = request.PickUpLocation.PostCode,
+                        Longitude = request.PickUpLocation.Longitude,
+                        Latitude = request.PickUpLocation.Latitude,
+                        Country = request.PickUpLocation.Country,
+                    },
+                    DropOffLocation = new Address
+                    {
+                        City = request.PickUpLocation.City,
+                        State = request.PickUpLocation.State,
+                        PostCode = request.PickUpLocation.PostCode,
+                        Longitude = request.PickUpLocation.Longitude,
+                        Latitude = request.PickUpLocation.Latitude,
+                        Country = request.PickUpLocation.Country,
+                    },
+                    PickUpPhoneNumber = request.PickUpPhoneNumber,
+                    PackageDescription = request.PackageDescription,
+                    ReferenceNumber = request.ReferenceNumber,
+                    Amount = request.Amount,
+                    RiderId = Guid.Empty,
+                    AppUserId = currentUser.Id,
+                    Status = OrderStatus.OrderPlaced
+                };
+           
+                await _context.Orders.AddAsync(order, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                    return Result<Guid>.Success(order.Id, "Order placed successfully");
+            }
+            catch (Exception)
+            {
+                return Result<Guid>.Fail("Order not placed");              
+            }
+           
         }
     }
 }
