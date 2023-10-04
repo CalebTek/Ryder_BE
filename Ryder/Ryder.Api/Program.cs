@@ -13,6 +13,7 @@ builder.Services.AddDbContextAndConfigurations(builder.Environment, builder.Conf
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IDocumentUploadService, DocumentUploadService>();
 builder.Services.AddSingleton<NotificationHub>();
 builder.Services.AddSignalR();
 
@@ -29,6 +30,7 @@ builder.Services.AddDbContextAndConfigurations(builder.Environment, builder.Conf
 builder.Services.ApplicationDependencyInjection();
 builder.Services.InjectInfrastructure(builder.Configuration);
 builder.Services.SetupSeriLog(builder.Configuration);
+builder.Services.ConfigureCloudinary(builder.Configuration);
 
 // Add configuration settings from appsettings.json
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)

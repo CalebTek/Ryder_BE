@@ -5,14 +5,14 @@ using Ryder.Domain.Entities;
 using Ryder.Domain.Enums;
 using AspNetCoreHero.Results;
 using Ryder.Domain.Context;
-using Microsoft.Extensions.Logging; // Import the logging library.
+using Microsoft.Extensions.Logging; 
 
 namespace Ryder.Application.Order.Command.AcceptOrder;
 
 public class AcceptOrderCommandHandler : IRequestHandler<AcceptOrderCommand, IResult<AcceptOrderResponse>>
 {
 	private readonly ApplicationContext _context;
-	private readonly ILogger<AcceptOrderCommandHandler> _logger; // Inject the logger.
+	private readonly ILogger<AcceptOrderCommandHandler> _logger;
 
 	public AcceptOrderCommandHandler(ApplicationContext context, ILogger<AcceptOrderCommandHandler> logger)
 	{
@@ -34,7 +34,7 @@ public class AcceptOrderCommandHandler : IRequestHandler<AcceptOrderCommand, IRe
 			return Result<AcceptOrderResponse>.Fail($"Order with ID {request.OrderId} not found.");
 		}
 
-		if (order.Status != OrderStatus.InProgress)
+		if (order.Status != OrderStatus.OrderPlaced)
 		{
 			// Log an information message when the order cannot be accepted.
 			_logger.LogInformation($"Order with ID {request.OrderId} cannot be accepted.");
@@ -45,7 +45,7 @@ public class AcceptOrderCommandHandler : IRequestHandler<AcceptOrderCommand, IRe
 
 		// Assign the rider ID to the order and update its status to "Accepted"
 		order.RiderId = request.RiderId;
-		order.Status = OrderStatus.Accepted;
+		order.Status = OrderStatus.InProgress;
 
 		// Save the updated order to your data source (e.g., database)
 		_context.Orders.Update(order);

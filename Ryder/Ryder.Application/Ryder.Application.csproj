@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Profile\**" />
+    <EmbeddedResource Remove="Profile\**" />
+    <None Remove="Profile\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AspNetCoreHero.Results" Version="1.1.1" />
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
@@ -16,11 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="User\Command\" />
+    <ProjectReference Include="..\Ryder.Infrastructure\Ryder.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ryder.Infrastructure\Ryder.Infrastructure.csproj" />
+    <Folder Include="User\Command\" />
   </ItemGroup>
 
 </Project>

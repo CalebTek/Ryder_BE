@@ -11,5 +11,6 @@ namespace Ryder.Application.Rider.Query.RidersEarnings
         public decimal TotalEarning { get; set; }
         public int TotalRides { get; set; }
         public TimeSpan TotalRideDuration { get; set;}
+        public ICollection<Ryder.Domain.Entities.Order> Rides { get; set; }
     }
 }

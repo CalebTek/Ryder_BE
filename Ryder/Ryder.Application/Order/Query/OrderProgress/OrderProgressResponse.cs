@@ -3,17 +3,15 @@ using Ryder.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ryder.Application.order.Query.OrderProgress
+namespace Ryder.Application.Order.Query.OrderProgress
 {
-     public class OrderProgressResponse
-    {
-        public int OrderId { get; set; }
-        public OrderStatus Status { get; set; }
-        public  Address PickUpLocation { get; set; }
-        public Address DropOffLocation { get;}
-       
+    public class OrderProgressResponse
+    {  
+        public string Status { get; set; }
+
     }
 }

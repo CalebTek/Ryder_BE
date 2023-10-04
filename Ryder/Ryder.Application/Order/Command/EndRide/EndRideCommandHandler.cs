@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging; // Import the logging library.
 using System.Runtime.CompilerServices;
 using Ryder.Application.Common.Hubs;
+using Ryder.Application.Order.Command.AcceptOrder;
 
 namespace Ryder.Application.Order.Command.EndRide
 {
@@ -39,13 +40,13 @@ namespace Ryder.Application.Order.Command.EndRide
                 return Result<EndRideResponse>.Fail($"Order with ID {request.OrderId} not found.");
             }
 
-            // Update the order details
-            order.Amount = request.Amount;
-            order.Status = OrderStatus.Delivered;
-            order.DropOffLocation = request.DropOffLocation;
-            order.PickUpPhoneNumber = request.PickUpPhoneNumber;
+            
+            
 
-            // Save the updated order to your data source (e.g., database)
+            // Update the order details
+            order.RiderId = request.OrderId;
+
+           
             _context.Update(order);
 
             await _context.SaveChangesAsync();
@@ -57,12 +58,10 @@ namespace Ryder.Application.Order.Command.EndRide
 			// Handle the successful update and return response
 			return Result<EndRideResponse>.Success(new EndRideResponse()
             {
-                OrderId = order.Id,
-                RiderId = order.RiderId,
-                DropOffLocation = order.DropOffLocation,
-                PickUpPhoneNumber = order.PickUpPhoneNumber,
-                Status = order.Status,
-                Amount = order.Amount
+                OrderId = order.RiderId,
+                Status= OrderStatus.Delivered,
+              
+
             });
         }
     }

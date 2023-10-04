@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Ryder.Api.Controllers;
 using Ryder.Application.Rider.Command.RiderAvailability;
 using Ryder.Application.Rider.Query.AllRiderHistory;
@@ -20,12 +21,14 @@ public class RiderController : ApiController
         return await Initiate(() => Mediator.Send(new GetRiderAvailabilityQuery { RiderId = id }));
     }
 
+    
     [HttpGet("ride-history-by-id/{riderId}")]
     public async Task<IActionResult> GetRideHistoryById(Guid riderId)
     {
         return await Initiate(() => Mediator.Send(new RideHistoryQuery { RiderId = riderId }));
     }
 
+    [AllowAnonymous]
     [HttpGet("Rider-Earnings/{id}")]
     public async Task<IActionResult> GetRiderEarnings(Guid id)
     {

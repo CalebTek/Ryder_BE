@@ -38,7 +38,6 @@ namespace Ryder.Domain.Context
                         break;
                     case EntityState.Added:
                         item.Entity.CreatedAt = DateTime.UtcNow;
-                        item.Entity.Id = Guid.NewGuid();
                         break;
                     default:
                         break;

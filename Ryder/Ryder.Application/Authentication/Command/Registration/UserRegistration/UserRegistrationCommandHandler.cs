@@ -53,7 +53,7 @@ namespace Ryder.Application.Authentication.Command.Registration.UserRegistration
 
                 //TODO:Change this to an email template
                 var emailBody =
-                    $"Your confirmation code is {token}. Please enter this code on our website to confirm your email address. This code will expire in 10 minutes.";
+                    $"Your confirmation link is {token}. Please enter this code on our website to confirm your email address. This link will expire in 10 minutes.";
                 var sent = await _emailService.SendEmailAsync(user.Email, "Confirm Email", emailBody);
 
                 if (!sent)

@@ -22,20 +22,22 @@ namespace Ryder.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("CreateRider")]
-        public async Task<IActionResult> CreateRider(RiderRegistrationCommand command)
+        public async Task<IActionResult> CreateRider([FromForm]RiderRegistrationCommand command)
         {
             return await Initiate(() => Mediator.Send(command));
         }
 
-        [HttpPost("forget-password")]
         [AllowAnonymous]
+        [HttpPost("forget-password")]
+        
         public async Task<IActionResult> ForgetPassword([FromBody] ForgetPasswordCommand request)
         {
             return await Initiate(() => Mediator.Send(request));
         }
 
-        [HttpPost("reset-password")]
         [AllowAnonymous]
+        [HttpPost("reset-password")]
+        
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand request)
         {
             return await Initiate(() => Mediator.Send(request));
@@ -62,7 +64,7 @@ namespace Ryder.Api.Controllers
             return await Initiate(() => Mediator.Send(command));
         }
 
-        [AllowAnonymous]
+        
         [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
         {

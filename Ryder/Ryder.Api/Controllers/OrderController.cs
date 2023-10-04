@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Ryder.Application.order.Query.OrderProgress;
 using Ryder.Application.Order.Command.AcceptOrder;
 using Ryder.Application.Order.Command.EndRide;
 using Ryder.Application.Order.Command.PlaceOrder;
 using Ryder.Application.Order.Query.GetAllOrder;
 using Ryder.Application.Order.Query.GetOderById;
+using Ryder.Application.Order.Query.OrderProgress;
+using MediatR;
+using AspNetCoreHero.Results;
+using Ryder.Application.Order.Query.OrderProgress;
 
 namespace Ryder.Api.Controllers
 {
@@ -39,15 +42,17 @@ namespace Ryder.Api.Controllers
         {
             return await Initiate(() => Mediator.Send(new GetAllOrderQuery { AppUserId = appUserId}));
         }
-
+        
         [HttpPost("progress")]
-        public async Task<IActionResult> RequestProgress([FromBody] OrderProgressCommand command)
+        public async Task<IActionResult> RequestProgress([FromBody] OrderProgressQuery query)
         {
             _logger.LogInformation("RequestProgress action invoked.");
-            return await Initiate(() => Mediator.Send(command));
+            return await Initiate(() => Mediator.Send(query));
         }
 
-   
+        
+       
+
         [HttpGet("{appUserId}/{orderId}")]
         public async Task<IActionResult> GetOrderById(Guid appUserId, Guid orderId)
         {
