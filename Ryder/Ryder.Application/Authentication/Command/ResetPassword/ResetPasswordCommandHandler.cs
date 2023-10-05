@@ -38,6 +38,10 @@ namespace Ryder.Application.Authentication.Command.ResetPassword
                 if (!result.Succeeded)
                     return Result<ResetPasswordResponse>.Fail("Failed to reset the password.");
 
+                // Check if the new password and confirm password match
+                if (request.NewPassword != request.ConfirmPassword)
+                    return Result<ResetPasswordResponse>.Fail("New password and confirm password do not match.");
+
                 // Send a password reset email using your IEmailService
                 var emailSubject = "Password Reset Successful";
                 var emailMessage = "Your password has been successfully reset.";
@@ -51,6 +55,7 @@ namespace Ryder.Application.Authentication.Command.ResetPassword
                 {
                     Email = request.Email,
                     NewPassword = request.NewPassword,
+                    ConfirmPassword = request.ConfirmPassword,
                     ResetToken = request.ResetToken
                 };
 

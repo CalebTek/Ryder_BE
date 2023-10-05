@@ -54,11 +54,11 @@ namespace Ryder.Infrastructure.Seed
                 var user = new AppUser
                 {
                     Id = Guid.NewGuid(),
-                    FirstName = "John",
-                    LastName = "Doe",
-                    UserName = "JohnDoe",
-                    Email = "johndoe@example.com",
-                    PhoneNumber = "00000000000",
+                    FirstName = "Olawale",
+                    LastName = "Odeyemi",
+                    UserName = "CeoCodes",
+                    Email = "olawale.odeyemi@decagon.dev",
+                    PhoneNumber = "01234567890",
                     PhoneNumberConfirmed = true,
                     EmailConfirmed = true,
                     ProfilePictureUrl = "www.avartar.com/publicId",
@@ -80,7 +80,7 @@ namespace Ryder.Infrastructure.Seed
                     RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(30),
                 };
 
-                await userManager.CreateAsync(user, "Password@123");
+                await userManager.CreateAsync(user, "P4ssw0rd@123");
                 await userManager.AddToRoleAsync(user, roles[1]);
 
 

@@ -22,14 +22,13 @@ namespace Ryder.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("CreateRider")]
-        public async Task<IActionResult> CreateRider([FromForm]RiderRegistrationCommand command)
+        public async Task<IActionResult> CreateRider([FromForm] RiderRegistrationCommand command)
         {
             return await Initiate(() => Mediator.Send(command));
         }
 
         [AllowAnonymous]
         [HttpPost("forget-password")]
-        
         public async Task<IActionResult> ForgetPassword([FromBody] ForgetPasswordCommand request)
         {
             return await Initiate(() => Mediator.Send(request));
@@ -37,7 +36,6 @@ namespace Ryder.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("reset-password")]
-        
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand request)
         {
             return await Initiate(() => Mediator.Send(request));
@@ -45,9 +43,9 @@ namespace Ryder.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login(LoginCommand command)
         {
-            return await Initiate(() => Mediator.Send(new LoginCommand { Email = email, Password = password }));
+            return await Initiate(() => Mediator.Send(command));
         }
 
         [AllowAnonymous]
@@ -64,7 +62,7 @@ namespace Ryder.Api.Controllers
             return await Initiate(() => Mediator.Send(command));
         }
 
-        
+
         [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
         {

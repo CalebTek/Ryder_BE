@@ -42,7 +42,7 @@ namespace Ryder.Application.Authentication.Command.ForgetPassword
 
                 // Create a password reset link with the token
                 var appUrl = _configuration["AppUrl"];
-                var resetLink = $"{appUrl}/reset-password?token={WebUtility.UrlEncode(passwordResetToken)}";
+                var resetLink = $"{appUrl}/reset-password?token={WebUtility.UrlEncode(passwordResetToken)}&email={request.Email}";
 
                 // Send a password reset email using your IEmailService
                 var emailSubject = "Forgot Password";

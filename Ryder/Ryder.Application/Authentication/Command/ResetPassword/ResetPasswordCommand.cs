@@ -8,6 +8,7 @@ namespace Ryder.Application.Authentication.Command.ResetPassword
     {
         public string Email { get; set; }
         public string NewPassword { get; set; }
+        public string ConfirmPassword { get; set; }
         public string ResetToken { get; set; }
     }
 
@@ -17,6 +18,7 @@ namespace Ryder.Application.Authentication.Command.ResetPassword
         {
             RuleFor(x => x.Email).NotEmpty().EmailAddress();
             RuleFor(x => x.NewPassword).NotEmpty().MinimumLength(6);
+            RuleFor(x => x.ConfirmPassword).NotEmpty().MinimumLength(6);
             RuleFor(x => x.ResetToken).NotEmpty();
         }
     }
