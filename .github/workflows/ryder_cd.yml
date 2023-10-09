@@ -31,9 +31,11 @@ jobs:
       
         - name: Init EB CLI
           run: |
+            cd Ryder
             eb init Ryder-Backend --platform Docker --region us-east-1
         
         - name: Deploy to Elastic Beanstalk
           run: |
+            cd Ryder
             eb deploy Ryder-Backend-env
             
