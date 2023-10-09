@@ -1,28 +1,33 @@
-name: Deploy master
+name: Deploy Ryder_Backend
 on:
   push:
     branches:
     - cicd-setup
 
+permissions:
+    id-token: write
+    contents: read
+
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-
-    - name: Checkout source code
-      uses: actions/checkout@v3
-
-    - name: Generate deployment package
-      run: |
-        cd Ryder
-        zip -r Ryder_backend.zip . -x '*.git*'
-
-    - name: Deploy to EB
-      uses: einaregilsson/beanstalk-deploy@v21
-      with:
-        role-to-assume: ${{ secrets.MANAGED_INTERNSHIP_S3_ROLE }}
-        application_name: Ryder-Backend
-        environment_name: Ryder-Backend-env
-        version_label: 1-2
-        region: us-east-1
-        deployment_package: Ryder_backend.zip
+    deploy:
+        runs-on: ubuntu-latest
+        env:
+            role-to-assume: ${{ secrets.MANAGED_INTERNSHIP_S3_ROLE }}
+        steps:
+        - uses: actions/checkout@v2
+        - name: Install Python 3.9
+          uses: actions/setup-python@v2
+          with:
+            python-version: 3.9
+        - name: Install EB CLI using pip
+          run: |
+            python -m pip install --upgrade pip
+            pip install awsebcli
+        
+        - name: Init EB CLI
+          run: |
+            eb init --platform Docker --region us-east-1
+        
+        - name: Deploy to Elastic Beanstalk
+          run: |
+            eb deploy
