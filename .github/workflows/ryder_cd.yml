@@ -12,7 +12,7 @@ jobs:
     deploy:
         runs-on: ubuntu-latest
         steps:
-        - uses: actions/checkout@v2
+        - uses: actions/checkout@v3
         - name: Install Python 3.9
           uses: actions/setup-python@v2
           with:
@@ -31,7 +31,7 @@ jobs:
       
         - name: Init EB CLI
           run: |
-            eb init --platform Docker --region us-east-1
+            eb init Ryder-Backend --platform Docker --region us-east-1
         
         - name: Deploy to Elastic Beanstalk
           run: |
