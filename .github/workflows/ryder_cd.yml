@@ -11,19 +11,24 @@ permissions:
 jobs:
     deploy:
         runs-on: ubuntu-latest
-        env:
-            role-to-assume: ${{ secrets.MANAGED_INTERNSHIP_S3_ROLE }}
         steps:
         - uses: actions/checkout@v2
         - name: Install Python 3.9
           uses: actions/setup-python@v2
           with:
             python-version: 3.9
+            
         - name: Install EB CLI using pip
           run: |
             python -m pip install --upgrade pip
             pip install awsebcli
-        
+            
+        - name: Configure AWS Credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            role-to-assume: ${{ secrets.MANAGED_INTERNSHIP_S3_ROLE }}
+            aws-region: us-east-1
+      
         - name: Init EB CLI
           run: |
             eb init --platform Docker --region us-east-1
