@@ -35,4 +35,5 @@ jobs:
         
         - name: Deploy to Elastic Beanstalk
           run: |
-            eb deploy
+            eb deploy Ryder-Backend-env
+            
