@@ -40,11 +40,11 @@ namespace Ryder.Application.Order.Command.EndRide
                 return Result<EndRideResponse>.Fail($"Order with ID {request.OrderId} not found.");
             }
 
-            
-            
+
+
 
             // Update the order details
-            order.RiderId = request.OrderId;
+            order.Status = OrderStatus.Delivered;
 
            
             _context.Update(order);
@@ -58,7 +58,8 @@ namespace Ryder.Application.Order.Command.EndRide
 			// Handle the successful update and return response
 			return Result<EndRideResponse>.Success(new EndRideResponse()
             {
-                OrderId = order.RiderId,
+                OrderId = order.Id,
+                RiderId = order.RiderId,
                 Status= OrderStatus.Delivered,
               
 

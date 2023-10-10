@@ -22,34 +22,50 @@ namespace Ryder.Application.Rider.Query.RidersEarnings
         }
         public async Task<IResult<RiderEarningsResponse>> Handle(RiderEarningsQuery request, CancellationToken cancellationToken)
         {
-            // Get all payments for the rider
-            var payments = from ride in _context.Riders
-            where ride.Id == request.RiderId
-                          join order in _context.Orders on ride.Id equals order.RiderId
-                          join pay in _context.Payments on order.Id equals pay.OrderId
-                          select pay;
+            // Finds the rider by id
+           
+            var riderId = await _context.Riders.FindAsync(request.RiderId, cancellationToken);
+            if (riderId == null) return (IResult<RiderEarningsResponse>)Result.Fail("Rider does not exist");
+
+            // Get all query from the Database
+            var query = from payment in _context.Payments
+                        join order in _context.Orders
+                        on payment.OrderId equals order.Id
+                        where payment.PaymentStatus == PaymentStatus.Successful
+                            && order.Status == OrderStatus.Delivered
+                            && order.RiderId == riderId.Id
+                        group new { payment, order } by (order.EndTime - order.StartTime).TotalHours
+            into grouped
+                        select new
+                        {
+                            TotalAmount = grouped.Sum(x => x.payment.Amount),
+                            TotalRides = grouped.Count(),
+                            TotalHours = TimeSpan.FromHours(grouped.Key)
+                        };
+
+            var result = query.ToList();
+            var rides = _context.Orders.Where(x => x.RiderId == riderId.Id && x.Status == OrderStatus.Delivered ).OrderByDescending(i => i.CreatedAt).ToList();
 
             // Calculate the total earnings for successful payments
-            var totalEarnings = payments.Where(x => x.PaymentStatus == PaymentStatus.Successful).Sum(x => x.Amount);
+            var totalEarning = result.Sum(item => item.TotalAmount);
 
             // Calculate the total number of rides
-            var totalRide = _context.Orders.Count(x => x.Status == OrderStatus.Delivered);
+            var totalRides = result.Sum(item => item.TotalRides);
 
             //Calculate the total ride duration
-            var totalRideDuration = TimeSpan.FromHours(_context.Orders.Where(x => x.Status == OrderStatus.Delivered).Sum(x => (x.EndTime - x.StartTime).TotalHours));
-
-            var rides = _context.Orders.Where(x => x.Status == OrderStatus.Delivered).OrderByDescending(i => i.CreatedAt).ToList();
+            var totalRideDuration = result.Sum(item => item.TotalHours.TotalHours);
 
             // An object with the calculated values
             var response = new RiderEarningsResponse
             {
-                TotalEarning = totalEarnings,
-                TotalRides = totalRide,
-                TotalRideDuration = totalRideDuration,
+                TotalEarning = totalEarning,
+                TotalRides = totalRides,
+                TotalRideDuration = TimeSpan.FromMinutes(totalRideDuration),
                 Rides = rides
             };
 
             return await Result<RiderEarningsResponse>.SuccessAsync(response);
+
         }
     }
 }
