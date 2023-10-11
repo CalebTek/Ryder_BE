@@ -1,4 +1,4 @@
-﻿//using System;
+﻿using System;
 //using System.Security.Cryptography;
 //using Microsoft.AspNetCore.Identity;
 //using Ryder.Domain.Entities;
@@ -35,8 +35,8 @@
 //                        City = "Warri",
 //                        State = "Delta",
 //                        PostCode = "+234",
-//                        Longitude = 3,
-//                        Latitude = 4,
+//                        //Longitude = 3,
+//                       // Latitude = 4,
 //                        Country = "Nigeria"
 //                    },
 //                    TwoFactorEnabled = false,
@@ -52,7 +52,7 @@
 
 //                if (result.Succeeded)
 //                {
-//                    // Add any additional properties to the user if needed
+//                    //Add any additional properties to the user if needed
 //                    // For example, user.FirstName = "John";
 //                }
 //            }

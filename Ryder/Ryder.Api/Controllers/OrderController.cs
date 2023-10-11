@@ -9,6 +9,8 @@ using Ryder.Application.Order.Query.OrderProgress;
 using MediatR;
 using AspNetCoreHero.Results;
 using Ryder.Application.Order.Query.OrderProgress;
+using Ryder.Application.Order.Command.DeclineOrder;
+using Ryder.Domain.Context;
 
 namespace Ryder.Api.Controllers
 {
@@ -24,11 +26,12 @@ namespace Ryder.Api.Controllers
 
         
         [HttpPost("placeOrder")]
-        public async Task<IActionResult> PlaceOrder([FromBody] PlaceOrderCommand placeOrder)
+        public async Task<IActionResult> PlaceOrder([FromBody] PlaceOrderCommand command)
         {
-            return await Initiate(() => Mediator.Send(placeOrder));
+            return await Initiate(() => Mediator.Send(command));
         }
 
+        
         [HttpPost("accept")]
         public async Task<IActionResult> AcceptOrder([FromBody] AcceptOrderCommand command)
         {
@@ -59,10 +62,19 @@ namespace Ryder.Api.Controllers
             return await Initiate(() => Mediator.Send(new GetOrderByIdQuery { AppUserId = appUserId, OrderId = orderId}));
         }
 
+        
         [HttpPost("end")]
         public async Task<IActionResult> EndRide([FromBody] EndRideCommand command)
         {
             _logger.LogInformation("EndRide action invoked.");
+            return await Initiate(() => Mediator.Send(command));
+        }
+
+        
+        [HttpPost("decline")]
+        public async Task<IActionResult> DeclineOrder([FromBody] DeclineOrderCommand command)
+        {
+            _logger.LogInformation("DeclineOrder action invoked.");
             return await Initiate(() => Mediator.Send(command));
         }
     }

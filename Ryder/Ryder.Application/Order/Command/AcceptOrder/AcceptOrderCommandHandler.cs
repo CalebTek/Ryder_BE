@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ryder.Application.Order.Command.AcceptOrder;
 
-public class AcceptOrderCommandHandler : IRequestHandler<AcceptOrderCommand, IResult<AcceptOrderResponse>>
+public class AcceptOrderCommandHandler : IRequestHandler<AcceptOrderCommand, IResult<string>>
 {
 	private readonly ApplicationContext _context;
 	private readonly ILogger<AcceptOrderCommandHandler> _logger;
@@ -19,44 +19,60 @@ public class AcceptOrderCommandHandler : IRequestHandler<AcceptOrderCommand, IRe
 		_context = context;
 		_logger = logger;
 	}
+    public async Task<IResult<string>> Handle(AcceptOrderCommand request, CancellationToken cancellationToken)
+    {
+        // Retrieve the order by its unique identifier (orderId) from your context
+        var order = await _context.Orders.FindAsync(request.OrderId);
 
-	public async Task<IResult<AcceptOrderResponse>> Handle(AcceptOrderCommand request, CancellationToken cancellationToken)
-	{
-		// Retrieve the order by its unique identifier (orderId) from your context
-		var order = await _context.Orders.FindAsync(request.OrderId);
+        if (order == null)
+        {
+           
+            _logger.LogInformation($"Order with ID {request.OrderId} not found.");
 
-		if (order == null)
-		{
-			// Log an information message when the order is not found.
-			_logger.LogInformation($"Order with ID {request.OrderId} not found.");
+            
+            return Result<string>.Fail($"Order with ID {request.OrderId} not found.");
+        }
 
-			// Handle the case where the order is not found
-			return Result<AcceptOrderResponse>.Fail($"Order with ID {request.OrderId} not found.");
-		}
+        // Check if the rider has already declined the order
+        var riderOrderStatus = _context.RequestStatuses.FirstOrDefault(ros =>
+            ros.RiderId == request.RiderId && ros.OrderId == request.OrderId && ros.RiderOrderStatus == RiderOrderStatus.Declined);
 
-		if (order.Status != OrderStatus.OrderPlaced)
-		{
-			// Log an information message when the order cannot be accepted.
-			_logger.LogInformation($"Order with ID {request.OrderId} cannot be accepted.");
+        if (riderOrderStatus != null)
+        {
+            
+            _logger.LogInformation($"Rider with ID {request.RiderId} has already declined Order with ID {request.OrderId}.");
 
-			// Handle the case where the order cannot be accepted 
-			return Result<AcceptOrderResponse>.Fail($"Order with ID {request.OrderId} cannot be accepted.");
-		}
+            
+            return Result<string>.Fail($"Rider with ID {request.RiderId} has already declined Order with ID {request.OrderId}.");
+        }
 
-		// Assign the rider ID to the order and update its status to "Accepted"
-		order.RiderId = request.RiderId;
-		order.Status = OrderStatus.InProgress;
+        // Assign the rider ID to the order and update its status to "Accepted"
+        order.RiderId = request.RiderId;
+        order.Status = OrderStatus.InProgress;
+        order.RiderOrderStatus = RiderOrderStatus.Accepted;
 
-		// Save the updated order to your data source (e.g., database)
-		_context.Orders.Update(order);
-		await _context.SaveChangesAsync();
+        // Save the updated order to your data source
+        _context.Orders.Update(order);
 
-		// Log an information message when the order is successfully accepted.
-		_logger.LogInformation($"Order with ID {request.OrderId} accepted.");
+        // Update the rider's request status
+        var newRiderOrderStatus = new RequestStatus
+        {
+            RiderId = request.RiderId,
+            OrderId = request.OrderId,
+            RiderOrderStatus = RiderOrderStatus.Accepted
+        };
 
-		// Handle the successful update
-		return Result<AcceptOrderResponse>.Success($"Order with ID {request.OrderId} accepted.");
-	}
+        _context.RequestStatuses.Add(newRiderOrderStatus);
+
+        await _context.SaveChangesAsync();
+
+        
+        _logger.LogInformation($"Order with ID {request.OrderId} accepted.");
+
+        
+        return Result<string>.Success($"Order with ID {request.OrderId} accepted.");
+    }
+
 
 
 }
