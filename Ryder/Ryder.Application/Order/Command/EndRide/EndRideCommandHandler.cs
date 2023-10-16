@@ -61,8 +61,7 @@ namespace Ryder.Application.Order.Command.EndRide
                 OrderId = order.Id,
                 RiderId = order.RiderId,
                 Status= OrderStatus.Delivered,
-              
-
+                UpdateAt = DateTime.UtcNow,
             });
         }
     }

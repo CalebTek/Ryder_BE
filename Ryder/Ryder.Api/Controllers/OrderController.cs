@@ -9,6 +9,7 @@ using Ryder.Application.Order.Query.OrderProgress;
 using MediatR;
 using AspNetCoreHero.Results;
 using Ryder.Domain.Context;
+using Ryder.Application.Order.Query.GetAllOrderStatus;
 
 namespace Ryder.Api.Controllers
 {
@@ -44,15 +45,23 @@ namespace Ryder.Api.Controllers
             return await Initiate(() => Mediator.Send(new GetAllOrderQuery { AppUserId = appUserId}));
         }
         
-        [HttpPost("progress")]
-        public async Task<IActionResult> RequestProgress([FromBody] OrderProgressQuery query)
+
+        [HttpGet("progress")]
+        public async Task<IActionResult> RequestProgress([FromBody] GetAllOrderProgressQuery query)
         {
             _logger.LogInformation("RequestProgress action invoked.");
             return await Initiate(() => Mediator.Send(query));
         }
 
-        
-       
+        [HttpGet("allOrderProgress")]
+        public async Task<IActionResult> AllOrderProgress([FromQuery] GetAllOrderStatusQuery query)
+        {
+            _logger.LogInformation("RequestProgress action invoked.");
+            return await Initiate(() => Mediator.Send(query));
+        }
+
+
+
 
         [HttpGet("{appUserId}/{orderId}")]
         public async Task<IActionResult> GetOrderById(Guid appUserId, Guid orderId)

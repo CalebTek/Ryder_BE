@@ -49,10 +49,13 @@ public class AcceptOrderCommandHandler : IRequestHandler<AcceptOrderCommand, IRe
         // Assign the rider ID to the order and update its status to "Accepted"
         order.RiderId = request.RiderId;
         order.Status = OrderStatus.InProgress;
-        order.RiderOrderStatus = RiderOrderStatus.Accepted;
+        order.RiderOrderStatus = RiderOrderStatus.Accepted; 
+        order.UpdatedAt = DateTime.UtcNow;
+          
+           
 
-        // Save the updated order to your data source
-        _context.Orders.Update(order);
+    // Save the updated order to your data source
+    _context.Orders.Update(order);
 
         // Update the rider's request status
         var newRiderOrderStatus = new RequestStatus

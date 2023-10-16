@@ -9,9 +9,13 @@ using System.Threading.Tasks;
 
 namespace Ryder.Application.Order.Query.OrderProgress
 {
-    public class OrderProgressResponse
+    public class OGetAllOrderrderProgressResponse
     {  
         public string Status { get; set; }
+        public decimal Amount { get; set; }
+
+        public DateTime  UpdatedAt { get; set; }
+
 
     }
 }

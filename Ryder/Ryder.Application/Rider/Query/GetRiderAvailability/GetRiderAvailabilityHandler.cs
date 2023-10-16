@@ -9,12 +9,10 @@ using Ryder.Domain.Enums;
 
 namespace Ryder.Application.Rider.Query.GetRiderAvailability
 {
-    public class
-        GetRiderAvailabilityHandler : IRequestHandler<GetRiderAvailabilityQuery, IResult<GetRiderAvailabilityResponse>>
+    public class GetRiderAvailabilityHandler : IRequestHandler<GetRiderAvailabilityQuery, IResult<GetRiderAvailabilityResponse>>
     {
         private readonly ApplicationContext _Context;
        
-
 		public GetRiderAvailabilityHandler(ApplicationContext context)
 		{
 			_Context = context;

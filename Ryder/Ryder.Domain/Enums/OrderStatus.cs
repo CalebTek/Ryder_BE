@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Ryder.Domain.Common;
+using System.ComponentModel;
 
 namespace Ryder.Domain.Enums
 {
@@ -14,8 +15,8 @@ namespace Ryder.Domain.Enums
         InProgress = 4,
         [Description(" Delivered")]
         Delivered = 5,
+       
 
 
-        
-    }
+}
 }
