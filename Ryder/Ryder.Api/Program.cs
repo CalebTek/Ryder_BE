@@ -14,8 +14,18 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDocumentUploadService, DocumentUploadService>();
-builder.Services.AddSingleton<NotificationHub>();
+builder.Services.AddTransient<NotificationHub>();
 builder.Services.AddSignalR();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowCrossOrigin", builder =>
+    {
+        builder.AllowAnyMethod()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
+});
 
 // Add services to the container.
 
@@ -31,6 +41,7 @@ builder.Services.ApplicationDependencyInjection();
 builder.Services.InjectInfrastructure(builder.Configuration);
 builder.Services.SetupSeriLog(builder.Configuration);
 builder.Services.ConfigureCloudinary(builder.Configuration);
+builder.Services.AddHttpClient();
 
 // Add configuration settings from appsettings.json
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -38,24 +49,26 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
+    options.AddPolicy("AllowAllOrigins", builder =>
+    {
+        builder.WithOrigins("https://ryder-frontend.vercel.app", "https://ryder.decagon.dev",
+                "http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
 });
 
 var app = builder.Build();
 
 app.UseCors("AllowAllOrigins");
 
-app.UseRouting();   
+app.UseRouting();
 
 app.UseAuthorization();
 
-app.ConfigureSignalR();
+//app.ConfigureSignalR();
+app.MapHub<NotificationHub>("/notificationsHub");
 // Configure the HTTP request pipeline.
 
 app.UseSwagger();
@@ -68,9 +81,9 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseCors("AllowAllOrigins");
+
 app.MapControllers();
-
-
 
 
 app.Run();
