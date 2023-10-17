@@ -1,3 +1,5 @@
+using NLog;
+using NLog.Extensions.Logging;
 using Ryder.Api.Configurations;
 using Ryder.Application;
 using Ryder.Application.Common.Hubs;
@@ -5,9 +7,12 @@ using Ryder.Infrastructure;
 using Ryder.Infrastructure.Implementation;
 using Ryder.Infrastructure.Interface;
 using Ryder.Infrastructure.Seed;
+using static Ryder.Api.Configurations.NLogConfiguration;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.ConfigureLogging((builderContext, config) => { AddNLogging(builderContext, config); });
 
 builder.Services.AddDbContextAndConfigurations(builder.Environment, builder.Configuration);
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -16,16 +21,6 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDocumentUploadService, DocumentUploadService>();
 builder.Services.AddTransient<NotificationHub>();
 builder.Services.AddSignalR();
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowCrossOrigin", builder =>
-    {
-        builder.AllowAnyMethod()
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials();
-    });
-});
 
 // Add services to the container.
 
@@ -39,13 +34,15 @@ builder.Services.ConfigureJwtAuthentication(builder.Configuration);
 builder.Services.AddDbContextAndConfigurations(builder.Environment, builder.Configuration);
 builder.Services.ApplicationDependencyInjection();
 builder.Services.InjectInfrastructure(builder.Configuration);
-builder.Services.SetupSeriLog(builder.Configuration);
 builder.Services.ConfigureCloudinary(builder.Configuration);
 builder.Services.AddHttpClient();
 
 // Add configuration settings from appsettings.json
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+builder.Configuration.SetBasePath(System.IO.Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables()
+    .Build();
 
 builder.Services.AddCors(options =>
 {
@@ -84,6 +81,5 @@ app.UseAuthorization();
 app.UseCors("AllowAllOrigins");
 
 app.MapControllers();
-
 
 app.Run();

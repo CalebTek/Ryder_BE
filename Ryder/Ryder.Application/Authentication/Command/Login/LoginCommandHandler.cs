@@ -15,73 +15,43 @@ namespace Ryder.Application.Authentication.Command.Login
         private readonly IUserService _userService;
         private readonly ITokenGeneratorService _tokenService;
         private readonly IConfiguration _configuration;
-		private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public LoginCommandHandler(IUserService userService, ITokenGeneratorService tokenService, IConfiguration configuration, UserManager<AppUser> userManager)
+        public LoginCommandHandler(IUserService userService, ITokenGeneratorService tokenService,
+            IConfiguration configuration, UserManager<AppUser> userManager)
         {
             _userService = userService;
             _tokenService = tokenService;
             _configuration = configuration;
-			_userManager = userManager;
+            _userManager = userManager;
         }
 
-		public async Task<IResult<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
-		{
-			// Validate user credentials
-			var user = await _userService.ValidateUserAsync(request.Email, request.Password);
+        public async Task<IResult<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
+        {
+            // Validate user credentials
+            var user = await _userService.ValidateUserAsync(request.Email, request.Password);
 
-			if (user == null)
-			{
-				return Result<LoginResponse>.Fail("Invalid username or password");
-			}
+            if (user == null)
+            {
+                return Result<LoginResponse>.Fail("Invalid username or password");
+            }
 
-			// Generate token
-			var token = await _tokenService.GenerateTokenAsync(user);
+            // Generate token
+            var token = await _tokenService.GenerateTokenAsync(user);
 
-			// Get the user's roles
-			var userRoles = await _userManager.GetRolesAsync(user);
+            // Get the user's roles
+            var userRoles = await _userManager.GetRolesAsync(user);
 
-			var response = new LoginResponse
-			{
-				Token = token,
-				UserId = user.Id,
-				UserName = user.UserName,
-				FullName = $"{user.FirstName} {user.LastName}",
-				UserRole = userRoles.FirstOrDefault()
-														
-			};
+            var response = new LoginResponse
+            {
+                Token = token,
+                UserId = user.Id,
+                UserName = user.UserName,
+                FullName = $"{user.FirstName} {user.LastName}",
+                UserRole = userRoles.FirstOrDefault()
+            };
 
-			return Result<LoginResponse>.Success(response);
-		}
-
-
-
-		//     public async Task<IResult<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
-		//     {
-		//         // Validate user credentials
-		//         var user = await _userService.ValidateUserAsync(request.Email, request.Password);
-
-		//         if (user == null)
-		//         {
-		//             return Result<LoginResponse>.Fail("Invalid username or password");
-		//         }
-
-		//         // Generate token
-		//         var token = await _tokenService.GenerateTokenAsync(user);
-
-		//         var response = new LoginResponse
-		//         {
-		//             Token = token,
-		//             UserId = user.Id,
-		//             UserName = user.UserName,
-		//             FullName = $"{user.FirstName} {user.LastName}",
-
-
-		//	// Add any other properties you want to return on successful login
-		//};
-
-		//         return Result<LoginResponse>.Success(response);
-		//     }
-	}
+            return Result<LoginResponse>.Success(response);
+        }
+    }
 }
-

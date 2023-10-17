@@ -1,12 +1,11 @@
 ﻿using AspNetCoreHero.Results;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using NLog;
 using Ryder.Infrastructure.Common;
 using Ryder.Infrastructure.Common.Exceptions;
-using Serilog;
 using System.Net;
 using IResult = AspNetCoreHero.Results.IResult;
 using ValidationException = Ryder.Infrastructure.Common.Exceptions.ValidationException;
@@ -18,6 +17,7 @@ namespace Ryder.Api.Controllers
     [ApiController]
     public class ApiController : Controller
     {
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private IMediator _mediator;
         protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
 
@@ -51,22 +51,22 @@ namespace Ryder.Api.Controllers
             }
             catch (ArgumentException ex)
             {
-                Log.Logger.Error(ex, ex.Message);
+                _logger.Error(ex, ex.Message);
                 return BadRequestResponse(ex.Message);
             }
             catch (ValidationException ex)
             {
-                Log.Logger.Error(ex, ex.Message);
+                _logger.Error(ex, ex.Message);
                 return BadRequestResponse(string.Join('\n', ex.Errors));
             }
             catch (ForbiddenAccessException ex)
             {
-                Log.Logger.Error(ex, ex.Message);
+                _logger.Error(ex, ex.Message);
                 return ForbiddenResponse("Forbidden");
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, ex.Message);
+                _logger.Error(ex, ex.Message);
                 return ServerErrorResponse(Constants.InternalServerErrorMessage);
             }
         }
@@ -86,22 +86,22 @@ namespace Ryder.Api.Controllers
             }
             catch (ArgumentException ex)
             {
-                Log.Logger.Error(ex, ex.Message);
+                _logger.Error(ex, ex.Message);
                 return BadRequestResponse(ex.Message);
             }
             catch (ValidationException ex)
             {
-                Log.Logger.Error(ex, ex.Message);
+                _logger.Error(ex, ex.Message);
                 return BadRequestResponse(string.Join('\n', ex.Errors));
             }
             catch (ForbiddenAccessException ex)
             {
-                Log.Logger.Error(ex, ex.Message);
+                _logger.Error(ex, ex.Message);
                 return ForbiddenResponse("Forbidden");
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, ex.Message);
+                _logger.Error(ex, ex.Message);
                 return ServerErrorResponse(Constants.InternalServerErrorMessage);
             }
         }
