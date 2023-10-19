@@ -34,7 +34,7 @@ namespace Ryder.Application.User.Command.EditUserProfile
             }
             catch (Exception ex)
             {
-                Log.Error(ex, $"Somrthing went wrong for this username {ex.Message} at Line {ex.StackTrace}");
+                Log.Error(ex, $"Something went wrong for this username {ex.Message} at Line {ex.StackTrace}");
 
                 return Result.Fail("Oops Something Went Wrong ");
             }

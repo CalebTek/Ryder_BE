@@ -15,6 +15,7 @@ namespace Ryder.Application.Authentication.Command.Registration.RiderRegistratio
         public string Password { get; set; }
         public string City { get; set; }
         public string State { get; set; }
+        public string PostCode { get; set; }
         public string Longitude { get; set; }
         public string Latitude { get; set; }
         public string Country { get; set; }
@@ -61,6 +62,7 @@ namespace Ryder.Application.Authentication.Command.Registration.RiderRegistratio
             RuleFor(x => x.Country).NotEmpty();
             RuleFor(x => x.Latitude).NotEmpty();
             RuleFor(x => x.Longitude).NotEmpty();
+            RuleFor(x => x.PostCode).NotEmpty();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Ryder.Application.Authentication.Command.ConfirmEmail
     public class ConfirmEmailCommand : IRequest<IResult>
     {
         public string Email { get; set; }
-        public string Otp { get; set; }
+        public string Token { get; set; }
     }
 
     public class ConfirmEmailCommandValidator : AbstractValidator<ConfirmEmailCommand>
@@ -24,7 +24,7 @@ namespace Ryder.Application.Authentication.Command.ConfirmEmail
                 .NotNull()
                 .EmailAddress();
 
-            RuleFor(request => request.Otp)
+            RuleFor(request => request.Token)
                 .NotEmpty()
                 .NotNull();
         }
