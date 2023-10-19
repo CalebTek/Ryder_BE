@@ -10,6 +10,7 @@ using MediatR;
 using AspNetCoreHero.Results;
 using Ryder.Domain.Context;
 using Ryder.Application.Order.Query.GetAllOrderStatus;
+using Ryder.Application.Rider.Query.GetRiderAvailability;
 
 namespace Ryder.Api.Controllers
 {
@@ -23,14 +24,14 @@ namespace Ryder.Api.Controllers
             _logger.LogInformation("OrderController initialized.");
         }
 
-        
+
         [HttpPost("placeOrder")]
         public async Task<IActionResult> PlaceOrder([FromBody] PlaceOrderCommand command)
         {
             return await Initiate(() => Mediator.Send(command));
         }
 
-        
+
         [HttpPost("accept")]
         public async Task<IActionResult> AcceptOrder([FromBody] AcceptOrderCommand command)
         {
@@ -38,14 +39,14 @@ namespace Ryder.Api.Controllers
             return await Initiate(() => Mediator.Send(command));
         }
 
-      
+
         [HttpGet("getAllOrder")]
         public async Task<IActionResult> GetAllOrder([FromQuery] Guid appUserId)
         {
-            return await Initiate(() => Mediator.Send(new GetAllOrderQuery { AppUserId = appUserId}));
+            return await Initiate(() => Mediator.Send(new GetAllOrderQuery { AppUserId = appUserId }));
         }
-        
 
+        
         [HttpGet("progress")]
         public async Task<IActionResult> RequestProgress([FromBody] GetAllOrderProgressQuery query)
         {
@@ -53,16 +54,16 @@ namespace Ryder.Api.Controllers
             return await Initiate(() => Mediator.Send(query));
         }
 
-        [HttpGet("allOrderProgress")]
-        public async Task<IActionResult> AllOrderProgress([FromQuery] GetAllOrderStatusQuery query)
+        
+        [HttpGet("allOrderProgress/{id}")]
+        public async Task<IActionResult> AllOrderProgress(Guid id)
         {
-            _logger.LogInformation("RequestProgress action invoked.");
-            return await Initiate(() => Mediator.Send(query));
+            return await Initiate(() => Mediator.Send(new GetAllOrderStatusQuery  {AppUserId = id }));
         }
 
 
 
-
+        
         [HttpGet("{appUserId}/{orderId}")]
         public async Task<IActionResult> GetOrderById(Guid appUserId, Guid orderId)
         {
