@@ -30,7 +30,10 @@ namespace Ryder.Application.Order.Query.GetAllOrder
                     return Result<List<Domain.Entities.Order>>.Fail("User not found");
                 }
 
-                var allOrders = await _context.Orders.Where(o => o.AppUserId == request.AppUserId).ToListAsync(cancellationToken);
+                var allOrders = await _context.Orders.Where(o => o.AppUserId == request.AppUserId)
+                    .Include(x=>x.PickUpLocation)
+                    .Include(x => x.DropOffLocation)
+                    .ToListAsync(cancellationToken);
 
                 return Result<List<Domain.Entities.Order>>.Success(allOrders);
             }

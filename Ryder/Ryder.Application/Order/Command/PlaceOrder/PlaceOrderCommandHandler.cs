@@ -51,6 +51,7 @@ namespace Ryder.Application.Order.Command.PlaceOrder
                         Longitude = request.PickUpLocation.Longitude,
                         Latitude = request.PickUpLocation.Latitude,
                         Country = request.PickUpLocation.Country,
+                        AddressDescription = request.PickUpLocation.AddressDescription,
                     },
                     DropOffLocation = new Address
                     {
@@ -60,6 +61,7 @@ namespace Ryder.Application.Order.Command.PlaceOrder
                         Longitude = request.PickUpLocation.Longitude,
                         Latitude = request.PickUpLocation.Latitude,
                         Country = request.PickUpLocation.Country,
+                        AddressDescription = request.DropOffLocation.AddressDescription,
                     },
                     PickUpPhoneNumber = request.PickUpPhoneNumber,
                     PackageDescription = request.PackageDescription,

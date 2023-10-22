@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Ryder.Domain.Context;
@@ -11,9 +12,11 @@ using Ryder.Domain.Context;
 namespace Ryder.Domain.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231021120203_AddedAddressDescription")]
+    partial class AddedAddressDescription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,9 +166,11 @@ namespace Ryder.Domain.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Country")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -175,15 +180,19 @@ namespace Ryder.Domain.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Latitude")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Longitude")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PostCode")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("State")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")

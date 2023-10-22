@@ -39,7 +39,7 @@ namespace Ryder.Api.Controllers
             return await Initiate(() => Mediator.Send(command));
         }
 
-
+        
         [HttpGet("getAllOrder")]
         public async Task<IActionResult> GetAllOrder([FromQuery] Guid appUserId)
         {
