@@ -27,6 +27,7 @@ namespace Ryder.Infrastructure
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ISmtpEmailService, SmtpEmailService>();
             services.AddSingleton(emailSettings);
+            services.AddScoped<IPaystackService, PaystackService>();
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

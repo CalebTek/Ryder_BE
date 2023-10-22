@@ -29,6 +29,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureSwagger();
 
+builder.Services.ConfigurePaystack(builder.Configuration);
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJwtAuthentication(builder.Configuration);
 builder.Services.AddDbContextAndConfigurations(builder.Environment, builder.Configuration);
@@ -36,6 +37,7 @@ builder.Services.ApplicationDependencyInjection();
 builder.Services.InjectInfrastructure(builder.Configuration);
 builder.Services.ConfigureCloudinary(builder.Configuration);
 builder.Services.AddHttpClient();
+
 
 // Add configuration settings from appsettings.json
 builder.Configuration.SetBasePath(System.IO.Directory.GetCurrentDirectory())
