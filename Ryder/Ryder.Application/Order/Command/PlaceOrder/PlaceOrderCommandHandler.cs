@@ -72,7 +72,7 @@ namespace Ryder.Application.Order.Command.PlaceOrder
                     Status = OrderStatus.OrderPlaced,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
-
+                    Email = currentUser.Email,
                 };
 
 

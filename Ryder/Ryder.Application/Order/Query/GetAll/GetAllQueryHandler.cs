@@ -38,13 +38,11 @@ namespace Ryder.Application.Order.Query.GetAll
                 DropOffLocationAddressDescription = order.DropOffLocation.AddressDescription,
                 PackageDescription = order.PackageDescription,
                 Amount = order.Amount,
-                Status = order.Status
+                Status = order.Status,
+                Email = order.Email
             }).ToList();
 
             return Result<List<GetAllQueryResponse>>.Success(orderResponses);
         }
-
     }
 }
-
-       
