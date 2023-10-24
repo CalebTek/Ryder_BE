@@ -39,7 +39,8 @@ namespace Ryder.Application.Order.Query.GetAll
                 PackageDescription = order.PackageDescription,
                 Amount = order.Amount,
                 Status = order.Status,
-                Email = order.Email
+                Email = order.Email,
+                Name = order.Name
             }).ToList();
 
             return Result<List<GetAllQueryResponse>>.Success(orderResponses);

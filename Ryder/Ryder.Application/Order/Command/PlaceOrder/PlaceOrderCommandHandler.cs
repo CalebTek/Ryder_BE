@@ -73,6 +73,7 @@ namespace Ryder.Application.Order.Command.PlaceOrder
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
                     Email = currentUser.Email,
+                    Name = currentUser.FirstName +" "+ currentUser.LastName
                 };
 
 

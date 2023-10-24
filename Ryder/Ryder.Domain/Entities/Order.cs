@@ -18,6 +18,7 @@ namespace Ryder.Domain.Entities
         public Guid AppUserId { get; set; }
         public Guid RiderId { get; set; }
         public string? Email { get; set; }
+        public string? Name { get; set; }
         public RiderOrderStatus RiderOrderStatus { get; set; }
 
 
