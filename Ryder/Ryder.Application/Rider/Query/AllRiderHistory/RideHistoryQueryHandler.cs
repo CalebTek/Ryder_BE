@@ -28,7 +28,7 @@ namespace Ryder.Application.Rider.Query.AllRiderHistory
             CancellationToken cancellationToken)
         {
             var rideHistory = await _context.Orders
-                .Where(r => r.RiderId == request.RiderId).Include(l => l.PickUpLocation).Include(l => l.DropOffLocation)
+                .Where(r => r.RiderId == request.RiderId).Include(l => l.PickUpLocation).Include(l => l.DropOffLocation).OrderByDescending(r => r.CreatedAt)
                 .ToListAsync();
 
             if (rideHistory == null || !rideHistory.Any())
