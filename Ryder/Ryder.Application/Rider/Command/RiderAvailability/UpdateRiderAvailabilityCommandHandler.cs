@@ -49,7 +49,6 @@ namespace Ryder.Application.Rider.Command.RiderAvailability
 
 				// Create and return the response
 
-
 				return Result<RiderAvailabilityResponse>.Success(response);
             }
             catch (Exception ex)

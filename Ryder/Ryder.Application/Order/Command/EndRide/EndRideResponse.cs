@@ -10,6 +10,8 @@ namespace Ryder.Application.Order.Command.EndRide
         public Guid RiderId { get; set; }
 
         public OrderStatus Status { get; set; }
+
+        public DateTime? UpdateAt { get; set; }
        
         
     }

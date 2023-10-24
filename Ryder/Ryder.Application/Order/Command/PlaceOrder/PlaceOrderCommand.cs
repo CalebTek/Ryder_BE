@@ -31,5 +31,6 @@ namespace Ryder.Application.Order.Command.PlaceOrder
         public string Longitude { get; set; }
         public string Latitude { get; set; }
         public string Country { get; set; }
+        public string AddressDescription { get; set; }
     }
 }

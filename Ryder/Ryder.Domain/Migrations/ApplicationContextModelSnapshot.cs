@@ -158,12 +158,14 @@ namespace Ryder.Domain.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("City")
+                    b.Property<string>("AddressDescription")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("City")
+                        .HasColumnType("text");
+
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -173,19 +175,15 @@ namespace Ryder.Domain.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Latitude")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Longitude")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PostCode")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("State")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -455,11 +453,17 @@ namespace Ryder.Domain.Migrations
                     b.Property<Guid>("DropOffLocationId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
                     b.Property<string>("PackageDescription")
                         .IsRequired()
@@ -478,6 +482,9 @@ namespace Ryder.Domain.Migrations
 
                     b.Property<Guid>("RiderId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("RiderOrderStatus")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp without time zone");
@@ -535,6 +542,39 @@ namespace Ryder.Domain.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("Ryder.Domain.Entities.RequestStatus", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RiderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("RiderOrderStatus")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("RiderId");
+
+                    b.ToTable("RequestStatuses");
                 });
 
             modelBuilder.Entity("Ryder.Domain.Entities.Rider", b =>

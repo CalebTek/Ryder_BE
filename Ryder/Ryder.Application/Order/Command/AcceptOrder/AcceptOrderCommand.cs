@@ -8,13 +8,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging; // Import the logging library.
+using Ryder.Domain.Enums;
 
 namespace Ryder.Application.Order.Command.AcceptOrder
 {
-    public class AcceptOrderCommand : IRequest<IResult<AcceptOrderResponse>>
+    public class AcceptOrderCommand : IRequest<IResult<string>>
     {
         public Guid OrderId { get; init; }
         public Guid RiderId { get; init; }
+      
     }
 
     public class AcceptOrderCommandValidator : AbstractValidator<AcceptOrderCommand>

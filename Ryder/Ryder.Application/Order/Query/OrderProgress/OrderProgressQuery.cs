@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace Ryder.Application.Order.Query.OrderProgress
 {
-    public class OrderProgressQuery : IRequest<IResult<OrderProgressResponse>>
+    public class GetAllOrderProgressQuery : IRequest<IResult<OGetAllOrderrderProgressResponse>>
     {
         public Guid OrderId { get; set; }
         public Guid AppUserId { get; set; }

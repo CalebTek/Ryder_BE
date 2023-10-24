@@ -21,6 +21,7 @@ namespace Ryder.Domain.Context
         public DbSet<Order> Orders { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Rider> Riders { get; set; }
+        public DbSet<RequestStatus>RequestStatuses { get; set; }
 
         public Task GetOrderByIdAsync(Guid orderId)
         {
@@ -83,7 +84,8 @@ namespace Ryder.Domain.Context
             modelBuilder.Entity<Order>().HasIndex(x => x.RiderId);
             modelBuilder.Entity<Payment>().HasIndex(x => x.OrderId);
             modelBuilder.Entity<Rider>().HasIndex(x => x.AppUserId);
-
+            modelBuilder.Entity<RequestStatus>().HasIndex(x => x.RiderId);
+            modelBuilder.Entity<RequestStatus>().HasIndex(x => x.OrderId);
 
             base.OnModelCreating(modelBuilder);
         }

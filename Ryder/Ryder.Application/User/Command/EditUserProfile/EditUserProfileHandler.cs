@@ -1,7 +1,9 @@
 ﻿using AspNetCoreHero.Results;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Ryder.Domain.Entities;
+using Serilog;
 
 namespace Ryder.Application.User.Command.EditUserProfile
 {
@@ -32,7 +34,9 @@ namespace Ryder.Application.User.Command.EditUserProfile
             }
             catch (Exception ex)
             {
-                return Result.Fail("Oops Something Went Wrong " + ex.Message);
+                Log.Error(ex, $"Something went wrong for this username {ex.Message} at Line {ex.StackTrace}");
+
+                return Result.Fail("Oops Something Went Wrong ");
             }
         }
     }

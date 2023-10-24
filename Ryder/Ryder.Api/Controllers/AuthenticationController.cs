@@ -62,7 +62,6 @@ namespace Ryder.Api.Controllers
             return await Initiate(() => Mediator.Send(command));
         }
 
-
         [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
         {

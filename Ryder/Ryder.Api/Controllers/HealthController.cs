@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ryder.Api.Controllers
@@ -22,6 +23,24 @@ namespace Ryder.Api.Controllers
         public IActionResult GetThrowBadRequest40()
         {
             return new BadRequestResult();
+        }
+
+        [HttpGet("logs")]
+        public IActionResult Logs()
+        {
+            string executablePath =
+                System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+
+            var text = System.IO.File.ReadAllText($"{executablePath}/logs/rider-logs-{DateTime.Now:yyyy-MM-dd}.log");
+            return Content(text, "text/plain");
+        }
+
+        [HttpPut("clearlogs")]
+        public IActionResult ClearLogs()
+        {
+            System.IO.File.WriteAllText($"/logs/rider-logs-{DateTime.Now:yyyy-MM-dd}.log",
+                string.Empty);
+            return Ok("Success");
         }
     }
 }
