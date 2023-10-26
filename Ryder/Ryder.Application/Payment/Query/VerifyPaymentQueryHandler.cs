@@ -28,6 +28,7 @@ namespace Ryder.Application.Payment.Query
                     // Payment verification was successful
                     response.IsPaymentValid = true;
                     response.Message = "Payment is valid and confirmed.";
+                    response.OrderId = request.OrderId;
                 }
                 else
                 {

@@ -11,7 +11,7 @@
 
             string randomPart = Guid.NewGuid().ToString("N").Substring(0, length - prefix.Length);
 
-            string uniqueReference = $"{prefix}{randomPart}";
+            string uniqueReference = $"{prefix}{randomPart}".ToUpper();
 
             return uniqueReference;
         }

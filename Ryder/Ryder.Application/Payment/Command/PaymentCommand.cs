@@ -11,6 +11,7 @@ namespace Ryder.Application.Payment.Command
         public string Email { get; set; }
         public string CallbackUrl { get; set; }
         public string Currency { get; set; } = "NGN";
+        public Guid OrderId { get; set; }
     }
 
     public class PaymentCommandValidator : AbstractValidator<PaymentCommand>
@@ -32,6 +33,11 @@ namespace Ryder.Application.Payment.Command
                 .NotEmpty()
                 .Must(BeAValidUri)
                 .WithMessage("Invalid URL format");
+
+            RuleFor(r => r.OrderId)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("Order ID not found");
         }
 
         private bool BeAValidUri(string callbackUrl)
