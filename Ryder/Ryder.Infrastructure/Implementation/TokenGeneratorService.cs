@@ -27,47 +27,47 @@ namespace Ryder.Infrastructure.Implementation
         }
 
 
-		public async Task<string> GenerateTokenAsync(AppUser user)
-		{
-			var authClaims = new List<Claim>
-			{
-				new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-				new Claim(ClaimTypes.Email, user.Email),
-				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-			};
+		    public async Task<string> GenerateTokenAsync(AppUser user)
+		    {
+			    var authClaims = new List<Claim>
+			    {
+				    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+				    new Claim(ClaimTypes.Email, user.Email),
+				    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+			    };
 
-			if (!string.IsNullOrWhiteSpace(user.FirstName))
-				authClaims.Add(new Claim(ClaimTypes.GivenName, user.FirstName));
+			    if (!string.IsNullOrWhiteSpace(user.FirstName))
+				    authClaims.Add(new Claim(ClaimTypes.GivenName, user.FirstName));
 
-			if (!string.IsNullOrWhiteSpace(user.LastName))
-				authClaims.Add(new Claim(ClaimTypes.Surname, user.LastName));
+			    if (!string.IsNullOrWhiteSpace(user.LastName))
+				    authClaims.Add(new Claim(ClaimTypes.Surname, user.LastName));
 
-			if (!string.IsNullOrWhiteSpace(user.PhoneNumber))
-				authClaims.Add(new Claim(ClaimTypes.MobilePhone, user.PhoneNumber));
+			    if (!string.IsNullOrWhiteSpace(user.PhoneNumber))
+				    authClaims.Add(new Claim(ClaimTypes.MobilePhone, user.PhoneNumber));
 
-			// Get the roles of the logged-in user
-			var roles = await _userManager.GetRolesAsync(user);
+			    // Get the roles of the logged-in user
+			    var roles = await _userManager.GetRolesAsync(user);
 
-			// Add the user's roles as a comma-separated string claim
-			authClaims.Add(new Claim("roles", string.Join(",", roles)));
+			    // Add the user's roles as a comma-separated string claim
+			    authClaims.Add(new Claim("roles", string.Join(",", roles)));
 
-			var signingKey =
-				new SymmetricSecurityKey(
-					Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"] ?? string.Empty));
-			TryParse(_configuration["JwtSettings:TokenValidityInMinutes"], out var tokenValidityInMinutes);
+			    var signingKey =
+				    new SymmetricSecurityKey(
+					    Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"] ?? string.Empty));
+			    TryParse(_configuration["JwtSettings:TokenValidityInMinutes"], out var tokenValidityInMinutes);
 
-			// Specify JWTSecurityToken Parameters
-			var token = new JwtSecurityToken
-			(
-				audience: _configuration["JwtSettings:Audience"],
-				issuer: _configuration["JwtSettings:Issuer"],
-				claims: authClaims,
-				expires: DateTime.Now.AddMinutes(tokenValidityInMinutes),
-				signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
-			);
+			    // Specify JWTSecurityToken Parameters
+			    var token = new JwtSecurityToken
+			    (
+				    audience: _configuration["JwtSettings:Audience"],
+				    issuer: _configuration["JwtSettings:Issuer"],
+				    claims: authClaims,
+				    expires: DateTime.Now.AddMinutes(tokenValidityInMinutes),
+				    signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
+			    );
 
-			return new JwtSecurityTokenHandler().WriteToken(token);
-		}
+			    return new JwtSecurityTokenHandler().WriteToken(token);
+		    }
 
 
 		public async Task<string> GenerateRefreshTokenAsync(AppUser user)

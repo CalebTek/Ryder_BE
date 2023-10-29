@@ -72,6 +72,7 @@ app.MapHub<NotificationHub>("/notificationsHub");
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
 app.UseDeveloperExceptionPage();
 
 await Seeder.SeedData(app);
